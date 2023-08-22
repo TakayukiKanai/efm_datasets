@@ -66,6 +66,12 @@ RUN apt-get install -y \
     libsdl2-2.0-0 \
     python-pygame
 
+# Install DGP and that dependencies, then make "tiny" data loading available
+RUN pip install google-ads==12.0.0
+RUN git clone  --depth 1 --branch v1.0  https://github.com/TRI-ML/dgp && \ 
+    sed -i "375s:^:#:" dgp/dgp/datasets/base_dataset.py
+ENV PYTHONPATH="${PWD}/dgp:$PYTHONPATH"
+
 RUN pip install git+https://github.com/princeton-vl/lietorch.git
 
 # Create workspace folder
